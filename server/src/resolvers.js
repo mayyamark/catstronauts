@@ -1,14 +1,13 @@
 const resolvers = {
   Query: {
     // returns an array of Tracks for the home page
-    tracksForHome: (parent, args, context, info) =>
-      // trackAPI with lowercase (it's an instance of the class)
-      context.dataSources.trackAPI.getTracksForHome(),
+    tracksForHome: (_, __, { dataSources }) =>
+      dataSources.trackApi.getTracksForHome(),
   },
   Track: {
-    // when querying tracksForHome, we need the data for the author => define a resolver for it as well
-    author: (parent, args, context, info) =>
-      context.dataSources.trackAPI.getAuthor(parent.authorId),
+    // returns data for a track's author
+    author: ({ authorId }, _, { dataSources }) =>
+      dataSources.trackApi.getAuthor(authorId),
   },
 };
 
