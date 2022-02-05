@@ -5,6 +5,7 @@ const resolvers = {
       dataSources.trackApi.getTracksForHome(),
     // get a single track by id, for the Track page
     track: (_, { id }, { dataSources }) => dataSources.trackApi.getTrack(id),
+    module: (_, { id }, { dataSources }) => dataSources.trackApi.getModule(id),
   },
   Track: {
     // returns data for a track's author
