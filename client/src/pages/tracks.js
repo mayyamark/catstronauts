@@ -5,18 +5,20 @@ import TrackCard from '../containers/track-card';
 import QueryResult from '../components/query-result';
 
 const TRACKS = gql`
-  query TracksForHome {
-    tracksForHome {
-      id
-      title
-      author {
+  query TracksForHome($page: Int, $offset: Int, $limit: Int) {
+    tracksForHome(page: $page, offset: $offset, limit: $limit) {
+      tracks {
         id
-        name
-        photo
+        title
+        author {
+          id
+          name
+          photo
+        }
+        thumbnail
+        length
+        modulesCount
       }
-      thumbnail
-      length
-      modulesCount
     }
   }
 `;
@@ -26,11 +28,18 @@ const TRACKS = gql`
  * We display a grid of tracks fetched with useQuery with the TRACKS query
  */
 const Tracks = () => {
-  const { data, loading, error } = useQuery(TRACKS);
+  const { data, loading, error } = useQuery(TRACKS, {
+    variables: {
+      page: 1,
+      limit: 13,
+      offset: 0,
+    },
+  });
+
   return (
     <Layout grid>
       <QueryResult error={error} loading={loading} data={data}>
-        {data?.tracksForHome?.map((track) => (
+        {data?.tracksForHome?.tracks?.map((track) => (
           <TrackCard track={track} key={track.id} />
         ))}
       </QueryResult>

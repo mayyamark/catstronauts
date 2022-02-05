@@ -2,12 +2,31 @@ const { gql } = require('apollo-server');
 
 const typeDefs = gql`
   type Query {
-    "Get tracks array for homepage grid"
-    tracksForHome: [Track!]!
+    "Get tracks array for homepage grid with pagination"
+    tracksForHome(page: Int, offset: Int, limit: Int): TracksForHomeResponse!
     "Fetch a specific track, provided a track's ID"
     track(id: ID): Track
     "Fetch a specific module, provided a module's ID"
     module(id: ID): Module!
+  }
+
+  type TracksForHomeResponse {
+    "Similar to HTTP status code, represents the status of the mutation"
+    code: Int!
+    "Indicates whether the mutation was successful"
+    success: Boolean!
+    "Human-readable message for the UI"
+    message: String!
+    "An array of tracks for the given page"
+    tracks: [Track!]!
+    "The total number of tracks"
+    tracksCount: Int
+    "The current page, passed in the variables"
+    currentPage: Int
+    "A boolean that describes if there is a next page"
+    hasNextPage: Boolean!
+    "A boolean that describes if there is a previous page"
+    hasPreviousPage: Boolean!
   }
 
   type Mutation {
