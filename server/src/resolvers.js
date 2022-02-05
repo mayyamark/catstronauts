@@ -7,6 +7,30 @@ const resolvers = {
     track: (_, { id }, { dataSources }) => dataSources.trackApi.getTrack(id),
     module: (_, { id }, { dataSources }) => dataSources.trackApi.getModule(id),
   },
+
+  Mutation: {
+    // increments a track's numberOfViews property
+    incrementTrackViews: async (_, { id }, { dataSources }) => {
+      try {
+        const track = await dataSources.trackApi.incrementTrackViews(id);
+
+        return {
+          code: 200,
+          success: true,
+          message: `Successfully incremented number of views for track ${id}!`,
+          track,
+        };
+      } catch (err) {
+        return {
+          code: err.extensions.response.status,
+          success: false,
+          message: err.extensions.response.body,
+          track: null,
+        };
+      }
+    },
+  },
+
   Track: {
     // returns data for a track's author
     author: ({ authorId }, _, { dataSources }) =>
