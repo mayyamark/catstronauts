@@ -35,8 +35,14 @@ const resolvers = {
     // returns data for a track's author
     author: ({ authorId }, _, { dataSources }) =>
       dataSources.trackApi.getAuthor(authorId),
+    // returns data for a track's modules
     modules: ({ id }, _, { dataSources }) =>
       dataSources.trackApi.getTrackModules(id),
+    durationInSeconds: ({ length }) => length,
+  },
+
+  Module: {
+    durationInSeconds: ({ length }) => length,
   },
 };
 

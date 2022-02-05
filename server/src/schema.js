@@ -35,8 +35,10 @@ const typeDefs = gql`
     author: Author!
     "The track's main illustration to display in track card or track page detail"
     thumbnail: String
+    "The full track's duration, in seconds"
+    durationInSeconds: Int
     "The track's approximate length to complete, in minutes"
-    length: Int
+    length: Int @deprecated(reason: "Use durationInSeconds")
     "The number of modules this track contains"
     modulesCount: Int
     "The track's complete description, can be in Markdown format"
@@ -50,10 +52,12 @@ const typeDefs = gql`
   "A Module is a single unit of teaching. Multiple Modules compose a Track"
   type Module {
     id: ID!
-    "The Module's title"
+    "The module's title"
     title: String!
-    "The Module's length in minutes"
-    length: Int
+    "The full module's duration, in seconds"
+    durationInSeconds: Int
+    "The module's length in minutes"
+    length: Int @deprecated(reason: "Use durationInSeconds")
     "The module's text-based description, can be in markdown format. In case of a video, it will be the enriched transcript"
     content: String
     "The module's video url, for video-based modules"
